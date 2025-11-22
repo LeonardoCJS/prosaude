@@ -1,0 +1,7 @@
+spring:
+  jpa:
+    show-sql: true
+  application:
+    name: java-advanced
+  profiles:
+    active: ${PROFILE:local}
