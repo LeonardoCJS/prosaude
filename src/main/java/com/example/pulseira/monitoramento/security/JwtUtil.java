@@ -8,13 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    // É crucial que esta chave seja longa e secreta. Mude para um valor seguro!
-    private final SecretKey jwtSecretKey = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+    // Chave secreta fixa e forte - nunca expor ou publicar!
+    private static final String SECRET = "4b825dc642cb6eb9a060e54bf8d69288fbee4904bcb3f4f8a66f3d2a4bfe14e6";
+    private final SecretKey jwtSecretKey = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
     private final long jwtExpirationMs = 86400000; // 24 horas
 
     public String generateToken(String username) {
@@ -22,7 +24,7 @@ public class JwtUtil {
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
-                .signWith(jwtSecretKey)
+                .signWith(jwtSecretKey, SignatureAlgorithm.HS512)
                 .compact();
     }
 
