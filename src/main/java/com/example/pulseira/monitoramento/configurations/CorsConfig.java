@@ -12,12 +12,12 @@ public class CorsConfig implements WebMvcConfigurer {
     //Metodo que configura as regras de CORS
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**") // Aplica as regras CORS a TODAS as rotas que começam com /api/
-                .allowedOrigins("*") //Permite requisições de QUALQUER origem/dominio * = curinga
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*") // <- funciona com credentials
+                .allowedMethods("*")
                 .allowedHeaders("*")
-                .exposedHeaders("Location")
-                .allowCredentials(false)
+                .allowCredentials(true)
                 .maxAge(3600);
+
     }
 }
