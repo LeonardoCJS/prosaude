@@ -1,14 +1,12 @@
 package com.example.pulseira.monitoramento.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Builder
 public class PulseiraResponseDTO {
     private Long idPulseira;
     private Integer numeroPulseira;

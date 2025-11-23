@@ -8,6 +8,9 @@ import com.example.pulseira.monitoramento.gateways.PulseiraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class PulseiraService {
 
@@ -53,5 +56,21 @@ public class PulseiraService {
             dto.setFuncionarioNome(p.getFuncionario().getNome());
         }
         return dto;
+    }
+
+    public List<PulseiraResponseDTO> listarPulseiras() {
+        List<Pulseira> pulseiras = repository.findAll();
+        List<PulseiraResponseDTO> response = new ArrayList<>();
+        pulseiras.forEach(pulseira -> {
+            response.add(
+                    PulseiraResponseDTO.builder()
+                            .idPulseira(pulseira.getIdPulseira())
+                            .numeroPulseira(pulseira.getNumeroPulseira())
+                            .funcionarioNome(pulseira.getFuncionario().getNome())
+                            .funcionarioId(pulseira.getFuncionario().getId())
+                            .build());
+        });
+
+        return response;
     }
 }

@@ -1,10 +1,12 @@
 package com.example.pulseira.monitoramento.services;
 
 import com.example.pulseira.monitoramento.domains.Funcionario;
+import com.example.pulseira.monitoramento.domains.Pulseira;
 import com.example.pulseira.monitoramento.domains.TempoSentado;
 import com.example.pulseira.monitoramento.dtos.TempoSentadoRequestDTO;
 import com.example.pulseira.monitoramento.dtos.TempoSentadoResponseDTO;
 import com.example.pulseira.monitoramento.exception.ResourceNotFoundException;
+import com.example.pulseira.monitoramento.gateways.PulseiraRepository;
 import com.example.pulseira.monitoramento.gateways.TempoSentadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +20,17 @@ public class TempoSentadoService {
     @Autowired
     private FuncionarioService funcionarioService;
 
+    @Autowired
+    private PulseiraRepository pulseiraRepository;
+
     public TempoSentadoResponseDTO salvarOuAtualizar(TempoSentadoRequestDTO dto) {
         Funcionario funcionario = funcionarioService.getById(dto.getFuncionarioId());
+        Pulseira pulseira = pulseiraRepository.findById(dto.getPulsseiraId()).orElseThrow();
         TempoSentado entity = repository.findByFuncionarioId(funcionario.getId());
         if (entity == null) {
             entity = TempoSentado.builder()
                     .funcionario(funcionario)
+                    .pulseira(pulseira)
                     .tempoMinutos(dto.getTempoMinutos())
                     .build();
         } else {
@@ -43,6 +50,7 @@ public class TempoSentadoService {
         dto.setFuncionarioId(t.getFuncionario().getId());
         dto.setFuncionarioNome(t.getFuncionario().getNome());
         dto.setTempoMinutos(t.getTempoMinutos());
+        dto.setPulsseiraId(t.getPulseira().getIdPulseira());
         return dto;
     }
 }

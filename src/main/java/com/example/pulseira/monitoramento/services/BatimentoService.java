@@ -2,9 +2,11 @@ package com.example.pulseira.monitoramento.services;
 
 import com.example.pulseira.monitoramento.domains.Batimento;
 import com.example.pulseira.monitoramento.domains.Funcionario;
+import com.example.pulseira.monitoramento.domains.Pulseira;
 import com.example.pulseira.monitoramento.dtos.BatimentoRequestDTO;
 import com.example.pulseira.monitoramento.dtos.BatimentoResponseDTO;
 import com.example.pulseira.monitoramento.gateways.BatimentoRepository;
+import com.example.pulseira.monitoramento.gateways.PulseiraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -18,11 +20,15 @@ public class BatimentoService {
     private BatimentoRepository repository;
     @Autowired
     private FuncionarioService funcionarioService;
+    @Autowired
+    private PulseiraRepository pulseiraRepository;
 
     public BatimentoResponseDTO save(BatimentoRequestDTO dto) {
         Funcionario funcionario = funcionarioService.getById(dto.getFuncionarioId());
+        Pulseira pulseira = pulseiraRepository.findById(dto.getPulsseiraId()).orElseThrow();
         Batimento batimento = Batimento.builder()
                 .batimento(dto.getBatimento())
+                .pulseira(pulseira)
                 .timestamp(LocalDateTime.now())
                 .funcionario(funcionario)
                 .build();
@@ -39,6 +45,7 @@ public class BatimentoService {
         dto.setId(b.getId());
         dto.setBatimento(b.getBatimento());
         dto.setTimestamp(b.getTimestamp());
+        dto.setPulsseiraId(b.getPulseira().getIdPulseira());
         if (b.getFuncionario() != null) {
             dto.setFuncionarioId(b.getFuncionario().getId());
             dto.setFuncionarioNome(b.getFuncionario().getNome());

@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class BatimentoResponseDTO {
+
     private Long id;
     private Integer batimento;
     private LocalDateTime timestamp;
