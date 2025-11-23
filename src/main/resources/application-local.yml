@@ -1,16 +1,13 @@
 spring:
   datasource:
-    driverClassName: org.h2.Driver
-    url: jdbc:h2:mem:java-advanced-db
-    username: sa
+    url: jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl
+    username: rm560512
+    password: 201099
+    driver-class-name: oracle.jdbc.OracleDriver
   h2:
     console:
       enabled: true
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    database-platform: org.hibernate.dialect.H2Dialect
-
-service:
-  aluno:
-    concat-id-to-aluno: enabled
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.OracleDialect
